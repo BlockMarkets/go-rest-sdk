@@ -1,0 +1,533 @@
+openapi: 3.0.1
+info:
+  contact:
+    url: https://www.blockmarkets.io
+  description: The BlockMarkets API provides real-time and historical market data on cryptocurrencies from the world's leading crypto exchanges. Sign up for a free, unlimited API key at [BlockMarkets Cryptocurrency API](https://www.blockmarkets.io/cryptocurrency-api).
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: BlockMarkets Cryptocurrency API
+  version: 1.0.0
+servers:
+- url: https://api.blockmarkets.io
+paths:
+  /v1/assets:
+    get:
+      operationId: listAssets
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              explode: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - api_key: []
+      summary: Returns a list of supported assets.
+  /v1/assets/{symbol}:
+    get:
+      operationId: listAssetMarkets
+      parameters:
+      - description: The asset symbol (see /assets)
+        explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      summary: Returns a list of all markets (base and quote) for a specific asset.
+  /v1/pairs:
+    get:
+      operationId: listPairs
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns a list of supported asset pairs.
+  /v1/pairs/{pair}:
+    get:
+      operationId: listPairMarkets
+      parameters:
+      - description: The asset pair (see /pairs)
+        explode: false
+        in: path
+        name: pair
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns a list of markets for a specific asset pair.
+  /v1/exchanges:
+    get:
+      operationId: listExchanges
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              explode: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - api_key: []
+      summary: Returns a list of supported exchanges.
+  /v1/exchanges/{exchange}:
+    get:
+      operationId: listExchangeMarkets
+      parameters:
+      - description: The 4-char exchange code (see /exchanges)
+        explode: false
+        in: path
+        name: exchange
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns a list of markets for a specific exchange.
+  /v1/markets:
+    get:
+      operationId: listMarkets
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns a list of supported markets.
+  /v1/markets/{exchange}/{pair}:
+    get:
+      operationId: marketTicker
+      parameters:
+      - description: The 4-char exchange code (see /exchanges)
+        explode: false
+        in: path
+        name: exchange
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The asset pair (see /pairs)
+        explode: false
+        in: path
+        name: pair
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns the latest ticker for a market pair.
+  /v1/markets/{exchange}/{pair}/trades:
+    get:
+      operationId: marketTrades
+      parameters:
+      - description: The 4-char exchange code (see /exchanges)
+        explode: false
+        in: path
+        name: exchange
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The asset pair (see /pairs)
+        explode: false
+        in: path
+        name: pair
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of records to retrieve (default=100, max=1000)
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Start datetime in ISO 8601
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: End datetime in ISO 8601
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns trades for a market pair. Requires premium subscription.
+  /v1/markets/{exchange}/{pair}/ohlcv:
+    get:
+      operationId: marketOHLCV
+      parameters:
+      - description: The 4-char exchange code (see /exchanges)
+        explode: false
+        in: path
+        name: exchange
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The asset pair (see /pairs)
+        explode: false
+        in: path
+        name: pair
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of records to retrieve (default=100, max=1000)
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Interval period in minutes. Supported - 1,3,5,15,30,60,1440 (default=1440)
+        explode: true
+        in: query
+        name: interval
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Start datetime in ISO 8601
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: End datetime in ISO 8601
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns OHLCV history for a market pair.
+  /v1/markets/{exchange}/{pair}/book:
+    get:
+      operationId: marketBook
+      parameters:
+      - description: The 4-char exchange code (see /exchanges)
+        explode: false
+        in: path
+        name: exchange
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The asset pair (see /pairs)
+        explode: false
+        in: path
+        name: pair
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns the top 50 bids and asks from the current order book for a market pair. Requires premium subscription.
+  /v1/rates/spot:
+    get:
+      operationId: listSpotRates
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns a list of supported USD spot rates.
+  /v1/rates/spot/{symbol}:
+    get:
+      operationId: spotRate
+      parameters:
+      - description: The asset symbol (see /assets)
+        explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns the last USD spot rate for an asset.
+  /v1/rates/spot/{symbol}/history:
+    get:
+      operationId: spotRateHistory
+      parameters:
+      - description: The asset symbol (see /assets)
+        explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of records to retrieve (default=100, max=1000)
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Start datetime in ISO 8601
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: End datetime in ISO 8601
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns historical spot rates for an asset. Requires premium subscription.
+  /v1/rates/spot/{symbol}/ohlcv:
+    get:
+      operationId: spotRateOHLCV
+      parameters:
+      - description: The asset symbol (see /assets)
+        explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of records to retrieve (default=100, max=1000)
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Interval period in minutes. Supported -  1,3,5,15,30,60,1440 (default=1440)
+        explode: true
+        in: query
+        name: interval
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Start datetime in ISO 8601
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: End datetime in ISO 8601
+        explode: true
+        in: query
+        name: end
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns the OHLCV history for a spot rate.
+  /v1/rates/benchmark:
+    get:
+      operationId: listBenchmarkRates
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns a list of supported USD benchmark rates.
+  /v1/rates/benchmark/{symbol}:
+    get:
+      operationId: benchmarkRate
+      parameters:
+      - description: The asset symbol (see /assets)
+        explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns the latest available benchmark rates for a specific asset.
+  /v1/rates/benchmark/{symbol}/history:
+    get:
+      operationId: benchmarkRateHistory
+      parameters:
+      - description: The asset symbol (see /assets)
+        explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The closing time. Options - 4pm-gmt-close, 4pm-est-close, 0-utc-close
+        explode: true
+        in: query
+        name: close
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+          description: 200 response
+      security:
+      - api_key: []
+      summary: Returns historical benchmark rates for an asset. Requires premium subscription.
+components:
+  schemas:
+    Empty:
+      title: Empty Schema
+      type: object
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
